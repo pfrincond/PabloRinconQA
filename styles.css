@@ -763,8 +763,7 @@ header {
 .timeline-date {
     display: inline-block;
     background-color: #eef2ff;
-    color: #3862E0;
-    /* Updated from var(--primary-color) #4169E1 */
+    color: var(--primary-color);
     padding: 5px 12px;
     border-radius: 20px;
     font-size: 0.85rem;
@@ -818,7 +817,7 @@ header {
 .skill-category h3 {
     font-size: 1.2rem;
     margin-bottom: 15px;
-    color: var(--secondary-color);
+    color: #647082;
 }
 
 .tag-cloud {
@@ -892,13 +891,14 @@ footer a:hover {
 .copyright {
     margin-top: 40px;
     font-size: 0.8rem;
-    color: #8899a6;
+    color: #9CAAB4;
+    /* Updated from #8899a6 */
 }
 
 .disclaimer {
     font-size: 0.75rem;
-    color: #5d6d7e;
+    color: #A8A8A8;
     font-style: italic;
     margin-top: 10px;
-    opacity: 0.8;
+    opacity: 1;
 }
