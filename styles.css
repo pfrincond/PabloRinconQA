@@ -715,7 +715,8 @@ header {
     /* Alignment with card center-ish */
     width: 20px;
     height: 20px;
-    background-color: var(--primary-color);
+    background-color: #3862E0;
+    /* Updated from var(--primary-color) #4169E1 */
     border-radius: 50%;
     border: 4px solid var(--white);
     box-shadow: 0 0 0 4px #e0e6ed;
@@ -725,7 +726,8 @@ header {
 
 .timeline-item:hover::before {
     background-color: var(--white);
-    border-color: var(--primary-color);
+    border-color: #3862E0;
+    /* Updated from var(--primary-color) #4169E1 */
     transform: scale(1.2);
     box-shadow: 0 0 15px rgba(65, 105, 225, 0.4);
 }
@@ -761,7 +763,8 @@ header {
 .timeline-date {
     display: inline-block;
     background-color: #eef2ff;
-    color: var(--primary-color);
+    color: #3862E0;
+    /* Updated from var(--primary-color) #4169E1 */
     padding: 5px 12px;
     border-radius: 20px;
     font-size: 0.85rem;
