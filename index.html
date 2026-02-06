@@ -320,13 +320,26 @@
         <nav aria-label="Main Navigation">
             <div class="nav-container">
                 <a href="#" class="logo">Pablo Rincón - QA</a>
-                <ul class="nav-links">
+
+                <!-- Main Menu Links (Drawer on Mobile) -->
+                <ul class="nav-links" id="nav-links">
                     <li><a href="#about">About</a></li>
                     <li><a href="#case-studies">Case Studies</a></li>
                     <li><a href="#experience">Experience</a></li>
                     <li><a href="#skills">Skills</a></li>
-                    <li><a href="#contact">Contact</a></li>
                 </ul>
+
+                <!-- Action Buttons (Visible on Mobile) -->
+                <div class="nav-actions">
+                    <a href="resume.pdf" class="nav-btn">Resume</a>
+                    <a href="https://www.linkedin.com/in/pablorinconqa/" target="_blank" rel="noopener noreferrer"
+                        class="nav-btn linkedin-btn">LinkedIn</a>
+                    <button class="hamburger" id="hamburger" aria-label="Toggle navigation">
+                        <span class="bar"></span>
+                        <span class="bar"></span>
+                        <span class="bar"></span>
+                    </button>
+                </div>
             </div>
         </nav>
     </header>
@@ -336,16 +349,28 @@
             <div class="container">
                 <div class="hero-content">
                     <div class="hero-text">
-                        <h1>Pablo Fernando Rincón Díaz</h1>
-                        <p class="subtitle">Senior Software Quality Analyst</p>
-                        <p class="tagline">Precision in every test. Quality in every release.</p>
+                        <p class="profile-name">Pablo Fernando Rincón Díaz</p>
+                        <h1>Senior Quality Software Analyst</h1>
+                        <p class="tagline">Web, Mobile & A11Y | Gen AI QA Enthusiast |<span class="highlight-metric">14+
+                                Years Delivering Bug-Free Products for Global Agencies.</span></p>
+
+                        <div class="logo-bar">
+                            <img src="images/logos/epam.svg" alt="EPAM" class="client-logo-img" width="100" height="40">
+                            <img src="images/logos/globant.svg" alt="Globant" class="client-logo-img" width="100"
+                                height="30">
+                            <img src="images/logos/huge.png" alt="HUGE" class="client-logo-img" width="60" height="60">
+                        </div>
+
+                        <p class="trust-signal">Available for Senior roles | Authorized to work in Colombia or remote.
+                        </p>
+
                         <div class="cta-buttons">
                             <a href="#contact" class="btn btn-primary">Get in Touch</a>
                             <a href="resume.pdf" class="btn btn-secondary">Download Resume</a>
                         </div>
                     </div>
                     <div class="hero-image">
-                        <img src="Me.webp" alt="Pablo Fernando Rincón Díaz" class="profile-photo" width="280"
+                        <img src="images/Me.webp" alt="Pablo Fernando Rincón Díaz" class="profile-photo" width="280"
                             height="280" fetchpriority="high" loading="eager">
                     </div>
                 </div>
@@ -358,7 +383,15 @@
                 <p>Detail-oriented QA specialist with 10+ years of experience bridging the gap between development logic
                     and user experience. Expert in functional, regression, and exploratory testing across Web, Mobile,
                     and Integration layers.</p>
-                <p class="location"><strong>Location:</strong> Bogotá, Colombia</p>
+                <p class="location">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                        class="location-icon">
+                        <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                        <circle cx="12" cy="10" r="3"></circle>
+                    </svg>
+                    <strong>Location:</strong> Bogotá, Colombia
+                </p>
             </div>
         </section>
 
@@ -504,6 +537,24 @@
             <p class="disclaimer">I made this portfolio entirely with the help of AI and Antigravity IDE.</p>
         </div>
     </footer>
+    <script>
+        const hamburger = document.getElementById('hamburger');
+        const navLinks = document.getElementById('nav-links');
+        const navItems = document.querySelectorAll('.nav-links a');
+
+        hamburger.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+            hamburger.classList.toggle('active');
+        });
+
+        // Close drawer when a link is clicked
+        navItems.forEach(item => {
+            item.addEventListener('click', () => {
+                navLinks.classList.remove('active');
+                hamburger.classList.remove('active');
+            });
+        });
+    </script>
 </body>
 
 </html>

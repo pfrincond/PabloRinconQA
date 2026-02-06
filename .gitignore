@@ -1,0 +1,11 @@
+# Mac system files
+.DS_Store
+
+# Large folders (if you use Node.js)
+node_modules/
+
+# Environment variables (Sensitive info)
+.env
+
+# Logs
+*.log
