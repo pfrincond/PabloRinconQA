@@ -763,7 +763,7 @@ header {
 .timeline-date {
     display: inline-block;
     background-color: #eef2ff;
-    color: var(--primary-color);
+    color: #3862E0;
     padding: 5px 12px;
     border-radius: 20px;
     font-size: 0.85rem;
