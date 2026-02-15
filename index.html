@@ -327,6 +327,10 @@
                     <li><a href="#case-studies">Case Studies</a></li>
                     <li><a href="#experience">Experience</a></li>
                     <li><a href="#skills">Skills</a></li>
+                    <li><a href="#recommendations">Recommendations</a></li>
+                    <div class="nav-indicator">
+                        <div class="nav-indicator-shine"></div>
+                    </div>
                 </ul>
 
                 <!-- Action Buttons (Visible on Mobile) -->
@@ -522,6 +526,18 @@
                 </div>
             </div>
         </section>
+
+        <section id="recommendations" class="recommendations-section">
+            <div class="container">
+                <h2>Recommendations</h2>
+                <!-- Responsive Centered Container as requested -->
+                <div id="linkedin-widget-container" class="linkedin-widget-container">
+                    <!-- Widget Code -->
+                    <div class="sk-ww-linkedin-recommendations" data-embed-id="25654495"></div>
+                    <script src="https://widgets.sociablekit.com/linkedin-recommendations/widget.js" defer></script>
+                </div>
+            </div>
+        </section>
     </main>
 
     <footer id="contact" role="contentinfo">
@@ -554,6 +570,110 @@
                 navLinks.classList.remove('active');
                 hamburger.classList.remove('active');
             });
+        });
+
+        // Timeline scroll animations using Intersection Observer
+        const timelineItems = document.querySelectorAll('.timeline-item');
+
+        const observerOptions = {
+            threshold: 0.2,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const timelineObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('reveal');
+                    // Optional: unobserve after revealing to prevent re-triggering
+                    // timelineObserver.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+
+        timelineItems.forEach(item => {
+            timelineObserver.observe(item);
+        });
+
+        // Anime Navbar Animation
+        const navIndicator = document.querySelector('.nav-indicator');
+        const navContainer = document.querySelector('.nav-links');
+        const navLinksItems = document.querySelectorAll('.nav-links a');
+
+        function moveIndicator(el) {
+            // Do not move indicator on mobile
+            if (window.innerWidth <= 980) return;
+
+            // Use offsetLeft/offsetTop BUT correctly account for the container's padding.
+            // The nav-indicator is absolutely positioned relative to the padding box of .nav-links.
+            // el.offsetLeft includes that padding.
+            // So we must subtract the padding to get the position relative to the padding box (which is the indicator's origin).
+
+            const style = window.getComputedStyle(el.offsetParent);
+            const paddingLeft = parseFloat(style.paddingLeft) || 0;
+            const paddingTop = parseFloat(style.paddingTop) || 0;
+
+            const left = el.offsetLeft - paddingLeft;
+            const top = el.offsetTop - paddingTop;
+            const width = el.offsetWidth;
+            const height = el.offsetHeight;
+
+            navIndicator.style.width = `${width}px`;
+            navIndicator.style.height = `${height}px`;
+            navIndicator.style.transform = `translate(${left}px, ${top}px)`;
+            navIndicator.style.opacity = '1';
+        }
+
+        function resetIndicator() {
+            const activeLink = document.querySelector('.nav-links a.active');
+            if (activeLink) {
+                moveIndicator(activeLink);
+            } else {
+                navIndicator.style.opacity = '0';
+            }
+        }
+
+        navLinksItems.forEach(link => {
+            link.addEventListener('mouseenter', (e) => {
+                moveIndicator(e.target);
+            });
+
+            link.addEventListener('click', (e) => {
+                // Remove active from all
+                navLinksItems.forEach(l => l.classList.remove('active'));
+                // Add to clicked
+                e.target.classList.add('active');
+            });
+        });
+
+        navContainer.addEventListener('mouseleave', resetIndicator);
+
+        // Handle Resize
+        window.addEventListener('resize', resetIndicator);
+
+        // Optional: rudimentary ScrollSpy to set active state on scroll
+        const sections = document.querySelectorAll('section');
+        window.addEventListener('scroll', () => {
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.clientHeight;
+                if (pageYOffset >= (sectionTop - sectionHeight / 3)) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            if (current) {
+                navLinksItems.forEach(link => {
+                    link.classList.remove('active');
+                    if (link.getAttribute('href').includes(current)) {
+                        link.classList.add('active');
+                        // Only move indicator if not hovering (to avoid conflict)
+                        if (!navContainer.matches(':hover')) {
+                            moveIndicator(link);
+                        }
+                    }
+                });
+            }
         });
     </script>
 </body>

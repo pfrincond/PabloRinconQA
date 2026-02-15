@@ -191,18 +191,101 @@ header {
 }
 
 /* Desktop Navigation */
+/* Navigation & Indicator */
 .nav-links {
     display: flex;
-    gap: 20px;
+    gap: 5px;
+    /* Reduced gap since links have padding now */
+    position: relative;
+    background-color: rgba(244, 246, 248, 0.5);
+    /* Subtle backing */
+    padding: 15px;
+    border-radius: 30px;
+    /* Pill shape container */
+    isolation: isolate;
+    /* Create stacking context */
 }
 
 .nav-links a {
     color: var(--text-color);
-    font-weight: 500;
+    font-weight: 600;
+    padding: 10px 20px;
+    border-radius: 25px;
+    position: relative;
+    z-index: 2;
+    /* Above indicator */
+    transition: all 0.3s ease;
 }
 
 .nav-links a:hover {
     color: var(--primary-color);
+    /* Work History Style Lift & Shadow */
+    transform: translateY(-2px);
+    text-decoration: none;
+}
+
+/* Anime Navbar "Pill" Indicator with Glow */
+.nav-indicator {
+    position: absolute;
+    /* Height/Width/Transform set by JS */
+    background-color: var(--white);
+    border-radius: 25px;
+    z-index: 1;
+    /* Behind text */
+    /* Base Shadow */
+    box-shadow: 0 0 10px rgba(65, 105, 225, 0.1);
+    opacity: 0;
+    transition: all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+    pointer-events: none;
+    overflow: hidden;
+    /* For shine effect */
+}
+
+/* Glow Layers (simulated with box-shadows on pseudo-elements or specific children) */
+/* To replicate "absolute inset-0 bg-primary/25 rounded-full blur-md" etc. from React/Tailwind */
+.nav-indicator::before {
+    content: '';
+    position: absolute;
+    inset: -4px;
+    background: rgba(65, 105, 225, 0.15);
+    border-radius: 30px;
+    filter: blur(8px);
+    z-index: -1;
+}
+
+.nav-indicator::after {
+    content: '';
+    position: absolute;
+    inset: -8px;
+    background: rgba(65, 105, 225, 0.1);
+    border-radius: 35px;
+    filter: blur(16px);
+    z-index: -2;
+}
+
+/* Shine Effect */
+.nav-indicator-shine {
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 50%;
+    height: 100%;
+    background: linear-gradient(90deg,
+            transparent,
+            rgba(255, 255, 255, 0.8),
+            transparent);
+    transform: skewX(-20deg);
+    animation: shineMove 2s infinite;
+}
+
+@keyframes shineMove {
+    0% {
+        left: -100%;
+    }
+
+    100% {
+        left: 200%;
+    }
 }
 
 .nav-actions {
@@ -252,8 +335,19 @@ header {
     transition: all 0.3s ease;
 }
 
+/* Intermediate Range: Hide Logo & Center Nav (981px - 1105px) */
+@media (max-width: 1105px) and (min-width: 981px) {
+    .logo {
+        display: none;
+    }
+
+    .nav-container {
+        justify-content: center;
+    }
+}
+
 /* Mobile Nav Stack & Drawer */
-@media (max-width: 768px) {
+@media (max-width: 980px) {
     .logo {
         display: none;
     }
@@ -339,6 +433,14 @@ header {
         transition-delay: 0.4s;
     }
 
+    .nav-links.active li:nth-child(5) {
+        transition-delay: 0.5s;
+    }
+
+    .nav-indicator {
+        display: none;
+    }
+
     .nav-links a {
         font-size: 1.5rem;
         /* Larger font for touch */
@@ -351,14 +453,37 @@ header {
     }
 
     .nav-links a:hover {
-        color: var(--primary-color);
-        padding-left: 10px;
-        /* Slide effect on hover */
+        /* Remove hover effects on mobile */
+        color: #2c3e50;
+        padding-left: 0;
+        background: none;
+        transform: none;
     }
 
     /* Ensure actions stay separate and visible in header */
     .nav-actions {
         gap: 15px;
+    }
+
+    .nav-actions .nav-btn {
+        position: relative;
+        overflow: hidden;
+    }
+
+    .nav-actions .nav-btn::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg,
+                transparent,
+                rgba(255, 255, 255, 0.4),
+                transparent);
+        transform: skewX(-20deg);
+        animation: shineMove 3s infinite;
+        pointer-events: none;
     }
 }
 
@@ -657,7 +782,7 @@ header {
 }
 
 /* Timeline */
-/* Timeline Redesign */
+/* Timeline Redesign with Modern Scroll Animations */
 .timeline-section {
     background-color: var(--white);
     padding-top: 80px;
@@ -674,36 +799,35 @@ header {
     margin-bottom: 50px;
     position: relative;
     opacity: 0;
-    transform: translateX(-20px);
-    animation: slideIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    transform: translateY(40px) scale(0.98);
+    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
 }
 
-/* Stagger Animations */
-.timeline-item:nth-child(1) {
-    animation-delay: 0.1s;
+/* Reveal animation when item is visible */
+.timeline-item.reveal {
+    opacity: 1;
+    transform: translateY(0) scale(1);
 }
 
-.timeline-item:nth-child(2) {
-    animation-delay: 0.2s;
+/* Enhanced reveal animation with stagger effect */
+.timeline-item.reveal:nth-child(1) {
+    transition-delay: 0.1s;
 }
 
-.timeline-item:nth-child(3) {
-    animation-delay: 0.3s;
+.timeline-item.reveal:nth-child(2) {
+    transition-delay: 0.2s;
 }
 
-.timeline-item:nth-child(4) {
-    animation-delay: 0.4s;
+.timeline-item.reveal:nth-child(3) {
+    transition-delay: 0.3s;
 }
 
-.timeline-item:nth-child(5) {
-    animation-delay: 0.5s;
+.timeline-item.reveal:nth-child(4) {
+    transition-delay: 0.4s;
 }
 
-@keyframes slideIn {
-    to {
-        opacity: 1;
-        transform: translateX(0);
-    }
+.timeline-item.reveal:nth-child(5) {
+    transition-delay: 0.5s;
 }
 
 .timeline-item::before {
@@ -738,7 +862,7 @@ header {
     border-radius: 12px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05), 0 1px 3px rgba(0, 0, 0, 0.1);
     border: 1px solid rgba(0, 0, 0, 0.05);
-    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
     position: relative;
 }
 
@@ -752,12 +876,14 @@ header {
     border-top: 10px solid transparent;
     border-bottom: 10px solid transparent;
     border-right: 10px solid var(--white);
+    transition: border-right-color 0.3s ease;
 }
 
 .timeline-item:hover .timeline-content {
-    transform: translateY(-5px) translateX(5px);
-    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1), 0 5px 15px rgba(0, 0, 0, 0.05);
-    border-color: rgba(65, 105, 225, 0.2);
+    transform: translateY(-8px) translateX(5px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12), 0 8px 20px rgba(65, 105, 225, 0.08);
+    border-color: rgba(65, 105, 225, 0.3);
+    background: linear-gradient(to bottom, #ffffff, #fafbff);
 }
 
 .timeline-date {
@@ -794,10 +920,62 @@ header {
     transition: color 0.3s ease;
 }
 
-.company-link:hover {
-    color: var(--primary-color);
-    text-decoration: underline;
+/* Recommendations Section */
+.recommendations-section {
+    background-color: var(--light-bg);
+    /* Use light bg to differentiate from Skills/Footer */
+    padding: 80px 0;
 }
+
+.linkedin-widget-container {
+    width: 100%;
+    max-width: 1160px;
+    height: 536px;
+    margin: 0 auto;
+    background: var(--white);
+    border-radius: var(--border-radius);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05), 0 1px 3px rgba(0, 0, 0, 0.1);
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    padding: 30px;
+    /* Scrollbar Logic */
+    overflow-y: auto;
+    overflow-x: hidden;
+    /* Custom Scrollbar */
+    scrollbar-width: thin;
+    scrollbar-color: var(--secondary-color) var(--light-bg);
+
+    position: relative;
+}
+
+.linkedin-widget-container::-webkit-scrollbar {
+    width: 8px;
+}
+
+.linkedin-widget-container::-webkit-scrollbar-track {
+    background: var(--light-bg);
+    border-radius: 4px;
+}
+
+.linkedin-widget-container::-webkit-scrollbar-thumb {
+    background-color: var(--secondary-color);
+    border-radius: 4px;
+    border: 2px solid var(--light-bg);
+}
+
+@media (max-width: 1200px) {
+    .linkedin-widget-container {
+        height: auto;
+        /* Allow auto height on smaller screens */
+        min-height: 536px;
+    }
+}
+
+@media (max-width: 768px) {
+    .linkedin-widget-container {
+        padding: 15px;
+    }
+}
+
 
 .timeline-content p {
     color: #555;
